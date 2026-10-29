@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlanUCV | Orientación y planificación académica</title>
+<link rel="icon" href="imagenes/logo-ucv.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="login-active">
+<script>if (localStorage.getItem("planUCV_tema") === "oscuro") document.body.classList.add("dark");</script>
+
+<!-- ===== INICIO DE SESIÓN ===== -->
+<div id="loginScreen" class="login-screen">
+  <button class="theme-toggle login-theme" type="button" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+
+  <div class="login-card">
+    <div class="login-cover">
+      <div class="login-cover-overlay"></div>
+      <div class="login-cover-content">
+        <img class="login-logo" src="imagenes/logo-ucv.png" alt="Logo UCV">
+        <strong>PlanU<span>CV</span></strong>
+        <p>Tu camino universitario</p>
+      </div>
+    </div>
+
+    <div class="login-form-panel">
+      <div class="login-brand">PlanU<span>CV</span></div>
+      <span class="login-kicker">ORIENTACIÓN ACADÉMICA</span>
+      <h1>Bienvenido a PlanUCV</h1>
+      <p>Inicia sesión con tu cuenta de Google para continuar con tu planificación académica. Tu avance se guarda en tu cuenta.</p>
+
+      <button id="googleLoginBtn" type="button" class="google-btn" onclick="loginConGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/>
+          <path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/>
+          <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/>
+        </svg>
+        <span>Continuar con Google</span>
+      </button>
+
+      <div id="loginMessage" class="login-message" role="alert"></div>
+      <div class="login-demo">Universidad César Vallejo · PlanUCV</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== APLICACIÓN ===== -->
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><img src="imagenes/logo-ucv.png" alt="Logo UCV"></div>
+      <div>
+        <strong>PlanU<span>CV</span></strong>
+        <small>Tu camino universitario</small>
+      </div>
+    </div>
+
+    <nav class="main-nav">
+      <button class="nav-item active" data-section="inicio"><span class="nav-icon">⌂</span><span>Inicio</span></button>
+      <button class="nav-item" data-section="recomendaciones"><span class="nav-icon">▦</span><span>Recomendaciones</span></button>
+      <button class="nav-item" data-section="horarios"><span class="nav-icon">▣</span><span>Horarios</span></button>
+      <button class="nav-item" data-section="apoyo"><span class="nav-icon">♧</span><span>Apoyo académico</span></button>
+      <button class="nav-item" data-section="perfil"><span class="nav-icon">♙</span><span>Mi perfil</span></button>
+    </nav>
+
+    <div class="sidebar-decoration">
+      <div class="decor-cat">🐱</div>
+      <p>Grandes metas,<br>pequeños pasos</p>
+      <div class="decor-hearts">♡ ✦ ♡</div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <span>PlanUCV v3.0</span>
+      <span class="online-dot">● Sistema activo</span>
+    </div>
+  </aside>
+
+
+  <main class="main-content">
+
+    <header class="topbar">
+      <div class="mobile-brand">
+        <img src="imagenes/logo-ucv.png" alt="" class="mobile-logo">
+        <strong>PlanU<span>CV</span></strong>
+      </div>
+
+      <div class="top-search">
+        <span>⌕</span>
+        <input id="globalSearch" type="text" placeholder="Buscar materias, libros, revistas..." aria-label="Búsqueda general">
+      </div>
+
+      <div class="top-actions">
+        <button class="theme-toggle" type="button" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+
+        <button class="notification-btn" id="notificationButton" type="button" aria-label="Notificaciones">
+          ♧<span id="notificationDot"></span>
+        </button>
+
+        <button class="user-top" id="userMenuButton" type="button">
+          <div class="avatar" id="topAvatar">E</div>
+          <div>
+            <strong id="userNameTop">Estudiante</strong>
+            <small>Hola, estudiante</small>
+          </div>
+          <span>⌄</span>
+        </button>
+
+        <div id="userMenu" class="user-menu">
+          <button type="button" onclick="cerrarSesion()">↪ Cerrar sesión</button>
+        </div>
+      </div>
+    </header>
+
+
+    <!-- INICIO -->
+    <section id="inicio" class="section active-section">
+
+      <div class="hero">
+        <div class="hero-text">
+          <span class="hero-badge">✨ PLANIFICACIÓN INTELIGENTE</span>
+          <h1>Tu camino<br>universitario,<strong>más organizado.</strong></h1>
+          <p>PlanUCV es un hub de orientación y planificación académica que te ayuda a elegir, organizar y reforzar tu aprendizaje en un solo lugar.</p>
+
+          <div class="hero-buttons">
+            <button class="btn-primary" onclick="goToSection('recomendaciones')">Comenzar ahora <span>→</span></button>
+            <button class="btn-soft" onclick="goToSection('apoyo')">Explorar apoyo</button>
+          </div>
+
+          <div class="hero-mini">
+            <span>✓ Sin cruces</span>
+            <span>✓ Recomendaciones</span>
+            <span>✓ Apoyo académico</span>
+          </div>
+        </div>
+
+        <div class="hero-art" role="img" aria-label="Fotos de la Universidad César Vallejo"></div>
+      </div>
+
+
+      <div class="home-cards">
+        <article class="feature-card pink-card">
+          <div class="feature-icon">🧠</div>
+          <span>01</span>
+          <h3>Recomendaciones personalizadas</h3>
+          <p>Descubre electivas, libros y revistas según tus intereses, historial y rendimiento.</p>
+          <button onclick="goToSection('recomendaciones')">Explorar →</button>
+        </article>
+
+        <article class="feature-card green-card">
+          <div class="feature-icon">📅</div>
+          <span>02</span>
+          <h3>Generación de horarios</h3>
+          <p>Arma un horario sin cruces utilizando un algoritmo de Backtracking.</p>
+          <button onclick="goToSection('horarios')">Crear horario →</button>
+        </article>
+
+        <article class="feature-card purple-card">
+          <div class="feature-icon">💡</div>
+          <span>03</span>
+          <h3>Apoyo académico</h3>
+          <p>Resuelve dudas, genera resúmenes y encuentra material relacionado.</p>
+          <button onclick="goToSection('apoyo')">Ir al apoyo →</button>
+        </article>
+
+        <article class="feature-card profile-mini-card">
+          <div class="feature-icon">🎓</div>
+          <span>PERFIL ACADÉMICO</span>
+          <h3 id="homeCareer">Ingeniería de Sistemas</h3>
+          <div class="progress-bar"><span id="profileProgress"></span></div>
+          <small id="progressText">0% perfil completado</small>
+          <p class="quote">“Disciplina hoy,<br>libertad mañana.”</p>
+        </article>
+      </div>
+
+
+      <div class="pipeline-section">
+        <div class="section-title">
+          <div>
+            <span>FLUJO CONTINUO</span>
+            <h2>Tu ciclo académico en un solo lugar</h2>
+          </div>
+        </div>
+
+        <div class="pipeline">
+          <div class="pipeline-step"><div>01</div><strong>Conoce tu perfil</strong><small>Intereses + notas</small></div>
+          <i>→</i>
+          <div class="pipeline-step"><div>02</div><strong>Elige mejor</strong><small>Materias + libros</small></div>
+          <i>→</i>
+          <div class="pipeline-step"><div>03</div><strong>Organiza</strong><small>Horario sin cruces</small></div>
+          <i>→</i>
+          <div class="pipeline-step"><div>04</div><strong>Refuerza</strong><small>Apoyo académico</small></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- RECOMENDACIONES -->
+    <section id="recomendaciones" class="section">
+
+      <div class="page-header">
+        <div>
+          <span class="page-kicker">ORIENTACIÓN PERSONALIZADA</span>
+          <h1>Recomendaciones personalizadas</h1>
+          <p>Basadas en tus intereses, historial académico y notas.</p>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="materias">Materias</button>
+        <button class="tab" data-tab="libros">Libros</button>
+        <button class="tab" data-tab="revistas">Revistas científicas</button>
+      </div>
+
+      <div class="recommendation-layout">
+
+        <aside class="profile-panel">
+          <div class="panel-heading">
+            <span>◉</span>
+            <div><strong>Tus intereses</strong><small>Selecciona tus áreas</small></div>
+          </div>
+
+          <div class="interest-grid">
+            <label><input type="checkbox" value="tecnologia" checked> Tecnología</label>
+            <label><input type="checkbox" value="diseno"> Diseño</label>
+            <label><input type="checkbox" value="naturaleza"> Naturaleza</label>
+            <label><input type="checkbox" value="musica"> Música</label>
+            <label><input type="checkbox" value="lectura"> Lectura</label>
+            <label><input type="checkbox" value="programacion" checked> Programación</label>
+            <label><input type="checkbox" value="ia"> Inteligencia Artificial</label>
+            <label><input type="checkbox" value="datos"> Datos</label>
+          </div>
+
+          <div class="panel-heading history-heading">
+            <span>▣</span>
+            <div><strong>Tu historial académico</strong><small>Notas registradas</small></div>
+          </div>
+
+          <div id="gradesList" class="grades-list"></div>
+
+          <button class="small-action" onclick="abrirModalNota()">+ Agregar nota</button>
+
+          <div class="profile-alert">💡 Si tu nota en un área está por debajo del umbral, PlanUCV prioriza recursos introductorios.</div>
+        </aside>
+
+
+        <div class="recommendation-content">
+
+          <div id="materiasTab" class="tab-content active">
+            <div class="result-heading">
+              <div><span>RECOMENDACIÓN ALGORÍTMICA</span><h2>Materias recomendadas</h2></div>
+              <button class="refresh-btn" onclick="actualizarRecomendaciones()">↻ Actualizar</button>
+            </div>
+
+            <div id="subjectRecommendations" class="recommendation-list"></div>
+
+            <div class="subsection-title">Libros recomendados</div>
+            <div id="bookPreview" class="book-row"></div>
+          </div>
+
+
+          <div id="librosTab" class="tab-content">
+            <div class="result-heading">
+              <div><span>BIBLIOTECA DIGITAL</span><h2>Libros</h2></div>
+            </div>
+
+            <div class="search-inline">
+              <input id="bookSearch" type="text" placeholder="Ej. inteligencia artificial" aria-label="Buscar libros">
+              <select id="bookLang" aria-label="Idioma">
+                <option value="">Todos los idiomas</option>
+                <option value="es">Español</option>
+                <option value="en">Inglés</option>
+              </select>
+              <button onclick="buscarLibros()">Buscar</button>
+            </div>
+
+            <div id="bookResults" class="resource-grid">
+              <div class="empty-box">📚<strong>Busca libros académicos</strong><span>PlanUCV consulta Google Books.</span></div>
+            </div>
+          </div>
+
+
+          <div id="revistasTab" class="tab-content">
+            <div class="result-heading">
+              <div><span>LITERATURA CIENTÍFICA</span><h2>Revistas y artículos científicos</h2></div>
+            </div>
+
+            <div class="search-inline">
+              <input id="articleSearch" type="text" placeholder="Ej. inteligencia artificial educación" aria-label="Buscar artículos">
+              <button onclick="buscarArticulos()">Buscar</button>
+            </div>
+
+            <div id="articleResults" class="resource-grid">
+              <div class="empty-box">🔬<strong>Explora literatura científica</strong><span>PlanUCV consulta OpenAlex.</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- HORARIOS -->
+    <section id="horarios" class="section">
+
+      <div class="page-header">
+        <div>
+          <span class="page-kicker">PLANIFICACIÓN</span>
+          <h1>Generación de horario</h1>
+          <p>Agrega tus materias, define restricciones y encuentra combinaciones sin cruces.</p>
+        </div>
+        <button class="btn-primary" onclick="generarHorarios()">✨ Generar horario</button>
+      </div>
+
+      <div class="steps-indicator">
+        <div class="step active"><span>1</span> Materias</div>
+        <div class="line"></div>
+        <div class="step"><span>2</span> Restricciones</div>
+        <div class="line"></div>
+        <div class="step"><span>3</span> Resultados</div>
+      </div>
+
+      <div class="schedule-layout">
+
+        <div class="schedule-card-panel">
+          <div class="card-title"><div><span>1.</span><strong>Agregar materias</strong></div></div>
+          <div class="course-group" id="courseGroup"></div>
+          <button type="button" class="add-course-inline" onclick="abrirModalCurso()">+ Agregar otra materia</button>
+        </div>
+
+        <div class="schedule-card-panel">
+          <div class="card-title"><div><span>2.</span><strong>Define tus restricciones</strong></div></div>
+
+          <label class="restriction-option"><span>🚫</span> No vienes por la tarde <input type="checkbox" id="noTarde"></label>
+          <label class="restriction-option"><span>🧩</span> Evitar huecos entre clases <input type="checkbox" id="sinHuecos"></label>
+          <label class="restriction-option"><span>🌅</span> No quieres clases muy temprano <input type="checkbox" id="noTemprano"></label>
+          <label class="restriction-option"><span>📅</span> Límite de clases por día
+            <select id="maxClasesDia">
+              <option value="4">Máx. 4</option>
+              <option value="5">Máx. 5</option>
+              <option value="6" selected>Máx. 6</option>
+            </select>
+          </label>
+
+          <div class="days-block">
+            <span>Días no disponibles</span>
+            <div class="days-checks">
+              <label><input type="checkbox" id="noLunes"> Lun</label>
+              <label><input type="checkbox" id="noMartes"> Mar</label>
+              <label><input type="checkbox" id="noMiercoles"> Mié</label>
+              <label><input type="checkbox" id="noJueves"> Jue</label>
+              <label><input type="checkbox" id="noViernes"> Vie</label>
+            </div>
+          </div>
+
+          <button type="button" class="btn-primary full" onclick="generarHorarios()">Generar horario →</button>
+        </div>
+
+        <div class="schedule-card-panel result-schedule-panel">
+          <div class="card-title result-title">
+            <div><span>3.</span><strong>Resultados</strong></div>
+            <span id="scheduleCounter" class="counter">Sin generar</span>
+          </div>
+
+          <div id="scheduleStatus" class="schedule-status">Agrega tus materias y genera un horario.</div>
+
+          <div id="scheduleOptions">
+            <div class="schedule-placeholder">📅<strong>Aún no has generado un horario</strong><span>El algoritmo buscará combinaciones sin cruces.</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="algorithm-info">
+        <div class="algorithm-icon">🌳</div>
+        <div>
+          <strong>¿Qué ocurre detrás de PlanUCV?</strong>
+          <p>El generador utiliza <b>Backtracking</b>. Explora las combinaciones como un árbol y, cuando detecta un conflicto, descarta esa rama y vuelve al paso anterior para probar otra opción.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- APOYO ACADÉMICO -->
+    <section id="apoyo" class="section">
+
+      <div class="page-header">
+        <div>
+          <span class="page-kicker">APOYO ACADÉMICO</span>
+          <h1>Resuelve tus dudas</h1>
+          <p>Busca un tema, lee su resumen y encuentra recursos para reforzar lo aprendido.</p>
+        </div>
+        <span class="free-badge">✓ Recursos gratuitos</span>
+      </div>
+
+      <div class="academic-search">
+        <div class="big-search">
+          <span>⌕</span>
+          <input id="academicSearch" type="text" placeholder="Ej. Inteligencia Artificial, Bases de Datos, Redes Neuronales..." aria-label="Buscar tema">
+          <button onclick="buscarTemaAcademico()">Buscar</button>
+        </div>
+      </div>
+
+      <div class="academic-grid">
+
+        <div class="academic-results">
+          <div class="academic-box-title"><span>RESULTADOS</span><h2>Temas relacionados</h2></div>
+
+          <div id="academicResults">
+            <button class="topic-card" data-tema="Inteligencia artificial">
+              <div class="topic-icon">🧠</div>
+              <div><strong>Inteligencia Artificial</strong><small>Sistemas · Tecnología</small></div><span>→</span>
+            </button>
+            <button class="topic-card" data-tema="Red neuronal artificial">
+              <div class="topic-icon">🕸️</div>
+              <div><strong>Redes Neuronales</strong><small>IA · Machine Learning</small></div><span>→</span>
+            </button>
+            <button class="topic-card" data-tema="Base de datos">
+              <div class="topic-icon">🗄️</div>
+              <div><strong>Bases de Datos</strong><small>SQL · Información</small></div><span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="summary-box">
+          <div class="academic-box-title"><span>RESUMEN DEL TEMA</span><h2 id="summaryTitle">Selecciona un tema</h2></div>
+          <div id="summaryContent" class="summary-content">
+            <p>Elige un tema de la lista o búscalo arriba para ver su resumen.</p>
+          </div>
+          <button class="summary-button" onclick="generarResumenCompleto()">✨ Ver resumen completo</button>
+        </div>
+
+        <div class="support-box">
+          <div class="academic-box-title"><span>MATERIAL DE APOYO</span><h2>Recursos</h2></div>
+          <button onclick="buscarVideos()">▶️<span><strong>Video explicativo</strong><small>Buscar en YouTube</small></span>→</button>
+        </div>
+
+      </div>
+
+      <div class="browser-section">
+        <div class="academic-box-title"><span>INVESTIGACIÓN</span><h2>Busca en Google Académico</h2></div>
+
+        <form class="scholar-form" action="https://scholar.google.com/scholar" method="GET" target="_blank" rel="noopener">
+          <input type="hidden" name="hl" value="es">
+          <input id="googleBrowserSearch" type="text" name="q" placeholder="Tema, autor o título del artículo" aria-label="Buscar en Google Académico" required>
+          <button type="submit" class="btn-primary">Buscar en Google Académico</button>
+        </form>
+      </div>
+    </section>
+
+
+    <!-- PERFIL -->
+    <section id="perfil" class="section">
+
+      <div class="page-header">
+        <div>
+          <span class="page-kicker">MI CUENTA</span>
+          <h1>Mi perfil académico</h1>
+          <p>Personaliza tus datos para mejorar las recomendaciones.</p>
+        </div>
+      </div>
+
+      <div class="profile-page">
+
+        <div class="large-profile-card">
+          <div class="large-avatar" id="largeAvatar">E</div>
+          <h2 id="profileDisplayName">Estudiante</h2>
+          <p id="profileDisplayCareer">Ingeniería de Sistemas</p>
+          <span class="profile-status">● Perfil activo</span>
+
+          <input type="file" id="photoInput" accept="image/*" hidden>
+          <button type="button" class="btn-soft photo-btn" onclick="document.getElementById('photoInput').click()">📷 Cambiar foto</button>
+          <button type="button" class="photo-remove" onclick="quitarFoto()">Quitar foto</button>
+        </div>
+
+        <div class="profile-form-card">
+          <h2>Información personal</h2>
+
+          <label>Nombre completo<input id="profileName" type="text"></label>
+          <label>Carrera<input id="profileCareer" type="text" value="Ingeniería de Sistemas"></label>
+          <label>Universidad<input id="profileUniversity" type="text" value="Universidad César Vallejo"></label>
+          <label>Ciclo
+            <select id="profileSemester">
+              <option>1.er ciclo</option><option>2.º ciclo</option><option>3.er ciclo</option>
+              <option>4.º ciclo</option><option>5.º ciclo</option><option>6.º ciclo</option>
+              <option>7.º ciclo</option><option>8.º ciclo</option><option>9.º ciclo</option>
+              <option>10.º ciclo</option>
+            </select>
+          </label>
+
+          <button class="btn-primary" type="button" onclick="guardarPerfil()">Guardar cambios</button>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="ucv-footer">
+      <img src="imagenes/logo-ucv.png" alt="">
+      <span>PlanUCV · Universidad César Vallejo</span>
+    </footer>
+
+  </main>
+</div>
+
+
+<!-- MODAL CURSO -->
+<div id="courseModal" class="modal">
+  <div class="modal-content" role="dialog" aria-labelledby="courseModalTitle">
+    <button type="button" class="modal-close" onclick="cerrarModalCurso()" aria-label="Cerrar">×</button>
+    <div class="modal-icon">📚</div>
+    <h2 id="courseModalTitle">Agregar materia</h2>
+    <p>Agrega una materia con su día y horario.</p>
+
+    <form id="courseForm" onsubmit="guardarCurso(event)">
+      <label>Nombre de la materia<input id="courseName" type="text" placeholder="Ej. Matemática Discreta" required></label>
+      <label>Docente<input id="courseTeacher" type="text" placeholder="Ej. Ing. Carlos Pérez"></label>
+
+      <div class="two-columns">
+        <label>Día
+          <select id="courseDay">
+            <option value="Lunes">Lunes</option>
+            <option value="Martes">Martes</option>
+            <option value="Miércoles">Miércoles</option>
+            <option value="Jueves">Jueves</option>
+            <option value="Viernes">Viernes</option>
+          </select>
+        </label>
+        <label>Hora inicio<select id="courseStart"></select></label>
+      </div>
+
+      <label>Hora fin<select id="courseEnd"></select></label>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-soft" onclick="cerrarModalCurso()">Cancelar</button>
+        <button type="submit" class="btn-primary">Agregar materia</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- MODAL NOTA -->
+<div id="gradeModal" class="modal">
+  <div class="modal-content small-modal" role="dialog" aria-labelledby="gradeModalTitle">
+    <button type="button" class="modal-close" onclick="cerrarModalNota()" aria-label="Cerrar">×</button>
+    <div class="modal-icon">📊</div>
+    <h2 id="gradeModalTitle">Agregar nota</h2>
+    <p>Añade una nota para mejorar el análisis del perfil.</p>
+
+    <form id="gradeForm">
+      <label>Curso<input id="gradeName" type="text" placeholder="Ej. Programación" required></label>
+      <label>Nota (0 a 20)<input id="gradeValue" type="number" min="0" max="20" step="0.1" placeholder="18" required></label>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-soft" onclick="cerrarModalNota()">Cancelar</button>
+        <button type="submit" class="btn-primary">Guardar nota</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div id="toast" class="toast" role="status"><span>✓</span><p id="toastMessage">Guardado correctamente</p></div>
+
+<div id="notificationPanel" class="notification-panel"></div>
+
+<script src="script.js"></script>
+<script type="module" src="auth.js"></script>
+
+</body>
+</html>
